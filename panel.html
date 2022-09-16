@@ -5,26 +5,34 @@
   <meta name="viewport"
         content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, shrink-to-fit=no">
   <script src="https://extension-files.twitch.tv/helper/v1/twitch-ext.min.js"></script>
-  <meta http-equiv="Content-Security-Policy" content="default-src *;img-src * 'self' data: https:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://ws.audioscrobbler.com; script-src-elem 'self' 'unsafe-inline' 'unsafe-eval' https://ws.audioscrobbler.com ">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src *;img-src * 'self' data: https:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://ws.audioscrobbler.com; script-src-elem 'self' 'unsafe-inline' 'unsafe-eval' https://ws.audioscrobbler.com ">
   <title>Недавние треки</title>
-  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/panel.css">
   <script src="js/jquery-3.6.1.min.js"></script>
 </head>
 <body>
 
 <div id="root" class="content">
+  <div class="error" hidden>
+    <h3>
+      Панель не настроена. Необходимо добавить логин от сервиса
+      <a href="https://www.last.fm/" target="_blank">LastFM</a> в настройках расширения
+    </h3>
+  </div>
   <div class="content_head">
-<!--    <h1>Очередь</h1>-->
+    <!--    <h1>Очередь</h1>-->
   </div>
   <div class="content_body">
     <div class="track_list">
     </div>
   </div>
   <div class="content_footer">
-<!--    <button type="button" id="updateList">Обновить</button>-->
+    <!--    <button type="button" id="updateList">Обновить</button>-->
   </div>
 </div>
 
-<script src="js/app.js"></script>
+<script src="https://extension-files.twitch.tv/helper/v1/twitch-ext.min.js"></script>
+<script src="js/panel.js"></script>
 </body>
 </html>
