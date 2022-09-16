@@ -39,6 +39,7 @@ const LastFm = {
       .then((response) => response.json())
       .then((data) => {
         this.success(data)
+
         // const today = new Date();
         // var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
         // console.log('Fetch: Success ' + time);
@@ -107,4 +108,13 @@ $("#updateList").click(function () {
 });
 */
 
-LastFm.init({params: {limit: "14", user: "gandreich"}, loadImages: false});
+const twitch = window.Twitch.ext;
+twitch.onAuthorized((auth) => {
+  // save our credentials
+  token = auth.token;
+  userId = auth.userId;
+  let configuration = JSON.parse(twitch.configuration.broadcaster.content)
+  if (configuration.username) LastFm.init({
+    params: {limit: "14", user: configuration.username}, loadImages: false
+  }); else $(".error").show()
+});
