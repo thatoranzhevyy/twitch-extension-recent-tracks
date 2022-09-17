@@ -26,5 +26,11 @@ twitch.onAuthorized((auth) => {
 
 $("#submit").click(function () {
   twitch.configuration.set('broadcaster', '1', JSON.stringify({"username": inputUsername.val()}));
-  console.log(twitch.configuration)
+  $(this).addClass("success");
+  $(this).val("Сохранено");
+  setInterval(() => {
+    $(this).removeClass("success");
+    $(this).val("Сохранить");
+  }, 1000);
+
 });
