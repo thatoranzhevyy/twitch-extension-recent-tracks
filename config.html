@@ -7,6 +7,19 @@
   <style>
       body {
           color: white;
+          font-family: CircularSp, CircularSp-Arab, CircularSp-Hebr, CircularSp-Cyrl, CircularSp-Grek, CircularSp-Deva, Helvetica Neue, helvetica, arial, Hiragino Kaku Gothic Pro, Meiryo, MS Gothic, sans-serif;
+      }
+
+      .button {
+          background-color: #9147ff;
+          text-decoration: none;
+          border: none;
+          color: white;
+          border-radius: 0.2rem;
+      }
+      .success{
+          background-color: #00db84;
+          color: black;
       }
   </style>
 </head>
@@ -14,12 +27,12 @@
 <div class="extension">
   <!-- basic form that allows streamer to select which WYR options -->
   <fieldset>
-    <legend> Настройки расширения</legend>
+    <legend>Настройки расширения</legend>
     <div>
       <label for="username">Логин пользователя LastFM: </label>
       <input type="text" id="username" value="">
     </div>
-    <input type="submit" id="submit" value="Сохранить">
+    <input type="submit" class="button" id="submit" value="Сохранить">
   </fieldset>
 </div>
 
