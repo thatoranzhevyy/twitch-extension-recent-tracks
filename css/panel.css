@@ -1,5 +1,5 @@
 ::-webkit-scrollbar {
-    width: 10px;
+    width: 6px;
 }
 
 /* Track */
@@ -10,11 +10,13 @@
 /* Handle */
 ::-webkit-scrollbar-thumb {
     background: #888;
+    border-radius: 8px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
+    border-radius: 8px;
 }
 
 body {
@@ -71,7 +73,11 @@ h2 {
 }
 
 .content_footer {
-    position: fixed;
-    bottom: 10px;
-    right: 8px;
+    color: #b3b3b3;
+    font-size: 0.6rem;
+    line-height: 12px;
+}
+
+.content_footer a {
+    color: #bf94ff;
 }

@@ -54,7 +54,7 @@ const LastFm = {
     }
     item = `
       <div class="track">
-        <a class="track_item" href="${trackElement.url}" target="_blank">` + ((this.defaults.loadImages) ? `<div class="track_item_image">
+        <div class="track_item">` + ((this.defaults.loadImages) ? `<div class="track_item_image">
             <img aria-hidden="false" draggable="false" loading="eager"
                  src="${trackElement.image[0]['#text']}" width="40" height="40" alt="">
           </div>` : "") + `
@@ -63,7 +63,7 @@ const LastFm = {
             <div class="track_artist"><span>${trackElement.artist['#text']}</span></div>
           </div>
           <div class="track_play_time" style="width: 25%">${this.handleDate(trackElement)}</div>
-        </a>
+        </div>
       </div>`;
     $(item).appendTo($('.track_list'))
     if (this.handleDate(trackElement) === "Сейчас") {
@@ -115,6 +115,6 @@ twitch.onAuthorized((auth) => {
   userId = auth.userId;
   let configuration = JSON.parse(twitch.configuration.broadcaster.content)
   if (configuration.username) LastFm.init({
-    params: {limit: "14", user: configuration.username}, loadImages: false
+    params: {limit: "8", user: configuration.username}, loadImages: false
   }); else $(".error").show()
 });

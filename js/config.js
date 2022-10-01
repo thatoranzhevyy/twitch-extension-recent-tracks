@@ -32,5 +32,4 @@ $("#submit").click(function () {
     $(this).removeClass("success");
     $(this).val("Сохранить");
   }, 1000);
-
 });
