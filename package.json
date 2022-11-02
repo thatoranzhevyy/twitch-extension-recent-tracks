@@ -1,0 +1,9 @@
+{
+  "name": "twitch-extension-recent-tracks",
+  "version": "1.0.0",
+  "scripts": {
+    "local": "http-server -p 8080 -a localhost -c-1"
+  },
+  "author": "thatoranzhevyy",
+  "license": "ISC"
+}

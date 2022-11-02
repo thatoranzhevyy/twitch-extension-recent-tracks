@@ -2,21 +2,24 @@ const LastFm = {
   defaults: { // default, override via params
     url: 'https://ws.audioscrobbler.com/2.0/?method=user.getRecentTracks',
     page: 'https://www.last.fm/user/',
-    user: 'oranzhevyy',
     params: {
-      limit: 5, format: 'json', api_key: 'df9ebdae99abc2fabf3c55ceb195e1db', user: 'gandreich'
+      limit: 5,
+      format: 'json',
+      api_key: '',
+      user: ''
     },
     loadImages: false,
     months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-  }, init(param) {
+  },
+  init(param) {
     var el, o = $.extend(true, {}, this.defaults, param);
     this.defaults = o;
     this.connector(o.url, o.params);
     setInterval(() => {
       this.connector(o.url, o.params)
     }, 10000);
-    // console.log(this.defaults)
-  }, success(jo) {
+  },
+  success(jo) {
     $('.track_list').empty();
     if (this.defaults.params.limit > 1 && jo.recenttracks.track.length) {
       for (i = 0; i < jo.recenttracks.track.length; i++) {
@@ -27,8 +30,8 @@ const LastFm = {
       // handle the non array returned
       // console.log(jo.recenttracks.track)
     }
-  }, async connector(url, params) {
-
+  },
+  async connector(url, params) {
     var str = $.param(params);
     await fetch(`${url}&${str}`, {
       method: 'GET', // or 'PUT'
@@ -39,16 +42,13 @@ const LastFm = {
       .then((response) => response.json())
       .then((data) => {
         this.success(data)
-
-        // const today = new Date();
-        // var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-        // console.log('Fetch: Success ' + time);
       })
       .catch((error) => {
+        $(".error").show()
         console.error('Fetch: Error ', error);
       });
-  }, renderItems(trackElement) {
-    // console.log(trackElement)
+  },
+  renderItems(trackElement) {
     if (this.handleDate(trackElement) === "Сейчас") {
       $("<h2>Сейчас играет</h2>").appendTo($('.track_list'))
     }
@@ -69,8 +69,8 @@ const LastFm = {
     if (this.handleDate(trackElement) === "Сейчас") {
       $("<h2>Недавние треки</h2>").appendTo($('.track_list'))
     }
-    // console.log(this.handleDate(trackElement))
-  }, handleDate(itm) {
+  },
+  handleDate(itm) {
     var n = new Date(), t, ago = "";
     if (itm.date && itm.date.uts) {
       t = Math.round((n.getTime() / 1000 - parseInt(itm.date.uts)) / 60);
@@ -79,7 +79,8 @@ const LastFm = {
       ago += "Сейчас";
     }
     return ago;
-  }, handleSinceDateEndings(t, original_timestamp) {
+  },
+  handleSinceDateEndings(t, original_timestamp) {
     var ago = " ", date;
     if (t <= 1) {
       ago += "Сейчас";
@@ -102,19 +103,19 @@ const LastFm = {
   }
 };
 
-/*
-$("#updateList").click(function () {
-  LastFm.init({params: {limit: "14", user: "gandreich"}, loadImages: true});
-});
-*/
-
 const twitch = window.Twitch.ext;
-twitch.onAuthorized((auth) => {
-  // save our credentials
-  token = auth.token;
-  userId = auth.userId;
+twitch.onAuthorized(() => {
   let configuration = JSON.parse(twitch.configuration.broadcaster.content)
-  if (configuration.username) LastFm.init({
-    params: {limit: "8", user: configuration.username}, loadImages: false
-  }); else $(".error").show()
+  if (!configuration.username || !configuration.api_key) {
+    $(".error").show()
+  } else {
+    LastFm.init({
+      params: {
+        limit: "8",
+        user: configuration.username,
+        api_key: configuration.api_key
+      },
+      loadImages: false
+    });
+  }
 });

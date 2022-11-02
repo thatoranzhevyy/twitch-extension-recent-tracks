@@ -1,6 +1,7 @@
 var token, userId;
 
 inputUsername = $("#username")
+inputApiKey = $("#api_key")
 
 // so we don't have to write this out everytime
 const twitch = window.Twitch.ext;
@@ -22,10 +23,14 @@ twitch.onAuthorized((auth) => {
 
   let configuration = JSON.parse(twitch.configuration.broadcaster.content)
   inputUsername.val(configuration.username)
+  inputApiKey.val(configuration.api_key)
 });
 
 $("#submit").click(function () {
-  twitch.configuration.set('broadcaster', '1', JSON.stringify({"username": inputUsername.val()}));
+  twitch.configuration.set('broadcaster', '1', JSON.stringify({
+    "username": inputUsername.val(),
+    "api_key": inputApiKey.val(),
+  }));
   $(this).addClass("success");
   $(this).val("Сохранено");
   setInterval(() => {
