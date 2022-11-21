@@ -3,7 +3,7 @@ const LastFm = {
     url: 'https://ws.audioscrobbler.com/2.0/?method=user.getRecentTracks',
     page: 'https://www.last.fm/user/',
     params: {
-      limit: 5,
+      limit: 8,
       format: 'json',
       api_key: '',
       user: ''
@@ -17,24 +17,12 @@ const LastFm = {
     this.connector(o.url, o.params);
     setInterval(() => {
       this.connector(o.url, o.params)
-    }, 10000);
-  },
-  success(jo) {
-    $('.track_list').empty();
-    if (this.defaults.params.limit > 1 && jo.recenttracks.track.length) {
-      for (i = 0; i < jo.recenttracks.track.length; i++) {
-        // console.log(jo.recenttracks.track[i])
-        this.renderItems(jo.recenttracks.track[i]);
-      }
-    } else {
-      // handle the non array returned
-      // console.log(jo.recenttracks.track)
-    }
+    }, 15000);
   },
   async connector(url, params) {
     var str = $.param(params);
     await fetch(`${url}&${str}`, {
-      method: 'GET', // or 'PUT'
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -48,12 +36,22 @@ const LastFm = {
         console.error('Fetch: Error ', error);
       });
   },
-  renderItems(trackElement) {
-    if (this.handleDate(trackElement) === "Сейчас") {
-      $("<h2>Сейчас играет</h2>").appendTo($('.track_list'))
+  success(data) {
+    if (data) {
+      if (this.defaults.params.limit > 1 && data.recenttracks.track.length) {
+        this.renderItems(data.recenttracks.track)
+      }
     }
-    item = `
-      <div class="track">
+  },
+  renderItems(recentTracks) {
+    $('.track_list').empty();
+    recentTracks.forEach((trackElement) => {
+      if (this.handleDate(trackElement) === "Сейчас") {
+        $('.track_list').append($('<h2/>', {text: 'Сейчас играет'}));
+      }
+
+      $('.track_list').append(
+        `<div class="track">
         <div class="track_item">` + ((this.defaults.loadImages) ? `<div class="track_item_image">
             <img aria-hidden="false" draggable="false" loading="eager"
                  src="${trackElement.image[0]['#text']}" width="40" height="40" alt="">
@@ -64,11 +62,13 @@ const LastFm = {
           </div>
           <div class="track_play_time" style="width: 25%">${this.handleDate(trackElement)}</div>
         </div>
-      </div>`;
-    $(item).appendTo($('.track_list'))
-    if (this.handleDate(trackElement) === "Сейчас") {
-      $("<h2>Недавние треки</h2>").appendTo($('.track_list'))
-    }
+      </div>`
+      );
+
+      if (this.handleDate(trackElement) === "Сейчас") {
+        $('.track_list').append($('<h2/>', {text: 'Недавние треки'}));
+      }
+    })
   },
   handleDate(itm) {
     var n = new Date(), t, ago = "";
@@ -92,15 +92,15 @@ const LastFm = {
       //console.log(t)
       ago += Math.floor(t / 60) + " часов назад";
     } else if (t < 2880) {
-      ago += "1 day ago";
+      ago += "1 день назад";
     } else if (t > 2880 && t < 4320) {
-      ago += "2 days ago";
+      ago += "2 дня назад";
     } else {
       date = new Date(parseInt(original_timestamp) * 1000)
       ago += this.defaults.months[date.getMonth()] + " " + date.getDate();
     }
     return ago;
-  }
+  },
 };
 
 const twitch = window.Twitch.ext;
@@ -119,3 +119,4 @@ twitch.onAuthorized(() => {
     });
   }
 });
+
